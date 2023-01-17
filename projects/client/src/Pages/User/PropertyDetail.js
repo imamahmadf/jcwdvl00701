@@ -241,17 +241,19 @@ function PropertyDetail(props) {
             excludeDateIntervals={disabledDateRanges}
             calendarClassName="rasta-stripes"
           />
-          <Box my={3}>
-            <Text fontWeight="bold" fontSize="xl" mb={1}>
-              Details
-            </Text>
-          </Box>
+          <Box>
+            <Box my={3}>
+              <Text fontWeight="bold" fontSize="xl" mb={1}>
+                Details
+              </Text>
+            </Box>
 
-          <Box backgroundColor="gray.200" p={3} mb={8}>
-            <Text fontWeight="bold" fontSize="lg">
-              {roomData?.capacity} Guest
-              {/* guest count ddapatnya dari state roomData*/}
-            </Text>
+            <Box backgroundColor="gray.200" p={3} mb={8}>
+              <Text fontWeight="bold" fontSize="lg">
+                {roomData?.capacity} Guest
+                {/* guest count ddapatnya dari state roomData*/}
+              </Text>
+            </Box>
           </Box>
         </Box>
       );
@@ -364,8 +366,8 @@ function PropertyDetail(props) {
 
   return (
     <Layout>
-      <div>
-        <Container maxW="container.lg">
+      <Box>
+        <Container maxW="container.lg" mt={{ ss: "0px", sl: "100px" }}>
           {/* ////////////////////////////// */}
           <Box>
             <Box my={3}>
@@ -382,7 +384,7 @@ function PropertyDetail(props) {
               overflow="hiden"
               objectFit="cover"
               width="100%"
-              height="210px"
+              height={{ ss: "210px", sl: "600px" }}
               src={process.env.REACT_APP_API_BASE_URL + pic}
             />
           </Box>
@@ -429,9 +431,6 @@ function PropertyDetail(props) {
               <Text fontWeight="bold" fontSize="md">
                 {tenantData.name}
               </Text>
-              <Text fontSize="md" color="grey">
-                Joined since {tenantData.createdAt}
-              </Text>
             </Box>
           </Flex>
           <Box my={3}>
@@ -449,7 +448,7 @@ function PropertyDetail(props) {
             Show All
           </Button>
         </Container>
-      </div>
+      </Box>
       {/* utk modal sebelum reserve */}
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

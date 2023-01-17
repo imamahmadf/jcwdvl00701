@@ -26,6 +26,7 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Spacer,
 } from "@chakra-ui/react";
 import ReactPaginate from "react-paginate";
 import "../../Style/pagination.css";
@@ -227,9 +228,42 @@ function Report() {
   }, [inputStartDate, inputEndDate, keyword, page]);
   return (
     <Layout>
-      <Box mt="80px">
+      <Box mt="70px">
+        <Container
+          maxW="1140px"
+          display={{ ss: "none", sm: "none", sl: "flex" }}
+        >
+          <Center
+            w="1140px"
+            backgroundSize="cover"
+            backgroundImage="/Assets/tenant-branda.png"
+            h="133px"
+            px="20px"
+          >
+            <Text
+              me="10px"
+              fontSize="42px"
+              fontWeight="bold"
+              display={{ ss: "none", sm: "flex", sl: "flex" }}
+            >
+              <i className="fa-solid fa-chart-simple"></i>
+            </Text>
+            <Text
+              fontSize="32px"
+              fontWeight="bold"
+              display={{ ss: "none", sm: "flex", sl: "flex" }}
+            >
+              Report
+            </Text>
+            <Spacer />
+          </Center>
+        </Container>
         <Container maxW="1140px">
-          <Text fontSize="20px" fontWeight="bold">
+          <Text
+            fontSize="20px"
+            fontWeight="bold"
+            display={{ ss: "flex", sm: "none", sl: "none" }}
+          >
             Report
           </Text>
           <Box bg="primary" p="10px" my="20px">

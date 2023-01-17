@@ -48,8 +48,16 @@ function CardBooking(props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [prove, setProve] = useState(false);
   const [err, setErr] = useState(false);
-  const { isOpen : isPaymentOpen, onOpen : onPaymentOpen, onClose : onPaymentClose } = useDisclosure();
-  const { isOpen : isCancelOpen, onOpen : onCancelOpen, onClose : onCancelClose } = useDisclosure();
+  const {
+    isOpen: isPaymentOpen,
+    onOpen: onPaymentOpen,
+    onClose: onPaymentClose,
+  } = useDisclosure();
+  const {
+    isOpen: isCancelOpen,
+    onOpen: onCancelOpen,
+    onClose: onCancelClose,
+  } = useDisclosure();
   let history = useHistory();
   const inputFileRef = useRef(null);
 
@@ -107,14 +115,14 @@ function CardBooking(props) {
   let resultBulan = searchBulan(bulan);
   // console.log(resultBulan);
 
-    if(User?.Profile?.birthdate === null){
-        alert("You must enter your date of birth ")
-        history.push("/profile")
-    }
+  if (User?.Profile?.birthdate === null) {
+    alert("You must enter your date of birth ");
+    history.push("/profile");
+  }
 
-    const btnHandlerUpload = async () => {
-        try {
-            const formData = new FormData()
+  const btnHandlerUpload = async () => {
+    try {
+      const formData = new FormData();
 
       formData.append("image", selectedFile);
       formData.append("reservationId", id);
@@ -124,7 +132,7 @@ function CardBooking(props) {
       );
       console.log(response.data);
       randomNumber(Math.random());
-      onPaymentClose()
+      onPaymentClose();
       history.push("/booking-history");
     } catch (err) {
       console.error(err.message);
@@ -136,11 +144,13 @@ function CardBooking(props) {
     axios
       .patch(`${process.env.REACT_APP_API_BASE_URL}/history/cancel-history`, {
         id: id,
+        startDate,
+        roomId,
       })
       .then((res) => {
         alert(res.data.message);
         randomNumber(Math.random());
-        onCancelClose()
+        onCancelClose();
       })
       .catch((err) => {
         console.error(err.message);
@@ -208,117 +218,132 @@ function CardBooking(props) {
                   </Text>
                 </Box>
                 <Box>
-                    <Text fontWeight="bold" fontSize="18px">
+                  <Text fontWeight="bold" fontSize="18px">
                     {Room?.Property?.name}
-                    </Text>
+                  </Text>
                 </Box>
-                </Flex>
-                <Flex bg="white" color="black" p="10px" pt="0px">
+              </Flex>
+              <Flex bg="white" color="black" p="10px" pt="0px">
                 <Text fontWeight="regular" fontSize="14px" w="110px">
-                    Chek-in
+                  Chek-in
                 </Text>
                 <Text fontWeight="regular" fontSize="14px" w="130px">
-                    {/* Sun, {val.start_date} Nov 2022 (14:00-22:00) */}
-                    {startDate2[2]} {resultBulan} {startDate2[0]} (14:00-22:00)
+                  {/* Sun, {val.start_date} Nov 2022 (14:00-22:00) */}
+                  {startDate2[2]} {resultBulan} {startDate2[0]} (14:00-22:00)
                 </Text>
-                </Flex>
-                <Flex
+              </Flex>
+              <Flex
                 bg="white"
                 color="black"
                 p="10px"
                 pt="0px"
                 borderBottom="1px"
                 borderColor="gray.200"
-                >
+              >
                 <Text fontWeight="regular" fontSize="14px" w="110px">
-                    Chek-out
+                  Chek-out
                 </Text>
                 <Text fontWeight="regular" fontSize="14px" w="130px">
-                    {/* Sun, {val.end_date} Nov 2022 (00:00-12:00) */}
-                    {endDate2[2]} {resultBulan} {endDate2[0]} (00:00-12:00)
+                  {/* Sun, {val.end_date} Nov 2022 (00:00-12:00) */}
+                  {endDate2[2]} {resultBulan} {endDate2[0]} (00:00-12:00)
                 </Text>
-                </Flex>
-                <Text
+              </Flex>
+              <Text
                 fontWeight="regular"
                 fontSize="14px"
                 bg="white"
                 color="black"
                 px="10px"
                 pt="10px"
-                >
+              >
                 (1x) {Room?.name}
-                </Text>
-                <Text
+              </Text>
+              <Text
                 fontWeight="regular"
                 fontSize="12px"
                 bg="white"
                 color="rgba(175, 175, 175, 1)"
                 px="10px"
                 pb="20px"
-                >
+              >
                 {guestCount} Guests
-                </Text>
-                {
-                status === 1 ? 
-                    <Flex direction={"column"}>
-                        <Flex>
-                            <FormControl>
-                                <Input
-                                type="file"
-                                accept="image/png, image/jpg"
-                                ref={inputFileRef}
-                                onChange={handleFile}
-                                display={"none"}
-                                />
-                                {/* <FormHelperText color={"black"}>Max size : 1MB</FormHelperText> */}
-                                <Button variant="secondary" w="100%" mt="10px" _hover={{bg:"black", color : "white"}} onClick={() => inputFileRef.current.click()}>
-                                Upload Image
-                                </Button>
-                            </FormControl>
-                            
-                            {
-                            selectedFile ? 
-                                <Button variant="secondary" w="100%" mt="10px" _hover={{bg:"black", color : "white"}} onClick={onPaymentOpen}>
-                                    <Text fontWeight="regular" fontSize="14px">
-                                    upload payment proof
-                                    </Text>
-                                </Button>                                                            
-                                :
-                                <Button variant="secondary" w="100%" mt="10px" _hover={{bg:"black", color : "white"}} disabled={"true"}>
-                                    <Text fontWeight="regular" fontSize="14px">
-                                    upload payment proof
-                                    </Text>
-                                </Button>
-                            }
-                        </Flex>
-                        {/* di simpan flex yg column agar posisi menyeluruh sampai samping */}
-                            {err ? 
-                                (
-                                <Alert status="error" color="red" text="center">
-                                    <i className="fa-solid fa-circle-exclamation"></i>
-                                    <Text ms="10px">{fileSizeMsg}</Text>
-                                </Alert>
-                                ) 
-                                : 
-                                null
-                            }
+              </Text>
+              {status === 1 ? (
+                <Flex direction={"column"}>
+                  <Flex>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        accept="image/png, image/jpg"
+                        ref={inputFileRef}
+                        onChange={handleFile}
+                        display={"none"}
+                      />
+                      {/* <FormHelperText color={"black"}>Max size : 1MB</FormHelperText> */}
+                      <Button
+                        variant="secondary"
+                        w="100%"
+                        mt="10px"
+                        _hover={{ bg: "black", color: "white" }}
+                        onClick={() => inputFileRef.current.click()}
+                      >
+                        Upload Image
+                      </Button>
+                    </FormControl>
 
-                            {prove ? 
-                                (
-                                <Alert status="info" color="green" text="center">
-                                    <i class="fa-solid fa-check"></i>
-                                    <Text ms="10px">image uploaded</Text>
-                                </Alert>
-                                )
-                                :
-                                null
-                            }
-                    </Flex>
-                :
-                    <Button variant="secondary" w="100%" mt="10px" bg="red.500" _hover={{bg:"red.700"}} onClick={onCancelOpen}>
-                    cancel
-                    </Button>
-                }
+                    {selectedFile ? (
+                      <Button
+                        variant="secondary"
+                        w="100%"
+                        mt="10px"
+                        _hover={{ bg: "black", color: "white" }}
+                        onClick={onPaymentOpen}
+                      >
+                        <Text fontWeight="regular" fontSize="14px">
+                          upload payment proof
+                        </Text>
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="secondary"
+                        w="100%"
+                        mt="10px"
+                        _hover={{ bg: "black", color: "white" }}
+                        disabled={"true"}
+                      >
+                        <Text fontWeight="regular" fontSize="14px">
+                          upload payment proof
+                        </Text>
+                      </Button>
+                    )}
+                  </Flex>
+                  {/* di simpan flex yg column agar posisi menyeluruh sampai samping */}
+                  {err ? (
+                    <Alert status="error" color="red" text="center">
+                      <i className="fa-solid fa-circle-exclamation"></i>
+                      <Text ms="10px">{fileSizeMsg}</Text>
+                    </Alert>
+                  ) : null}
+
+                  {prove ? (
+                    <Alert status="info" color="green" text="center">
+                      <i class="fa-solid fa-check"></i>
+                      <Text ms="10px">image uploaded</Text>
+                    </Alert>
+                  ) : null}
+                </Flex>
+              ) : (
+                <Button
+                  variant="secondary"
+                  w="100%"
+                  mt="10px"
+                  bg="red.500"
+                  _hover={{ bg: "red.700" }}
+                  onClick={onCancelOpen}
+                >
+                  cancel
+                </Button>
+              )}
             </Box>
             <Flex bg="white" color="black" p="10px" w="100%" mt="20px">
               <Box me="10px">
@@ -457,52 +482,60 @@ function CardBooking(props) {
         </Flex>
       </Container>
       {/* utk modal payment*/}
-        <Modal closeOnOverlayClick={false} isOpen={isPaymentOpen} onClose={onPaymentClose}>
-            <ModalOverlay />
-            <ModalContent borderRadius={0}>
-            <ModalHeader>Are you sure to pay room?</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}></ModalBody>
+      <Modal
+        closeOnOverlayClick={false}
+        isOpen={isPaymentOpen}
+        onClose={onPaymentClose}
+      >
+        <ModalOverlay />
+        <ModalContent borderRadius={0}>
+          <ModalHeader>Are you sure to pay room?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}></ModalBody>
 
-            <ModalFooter>
-                <Button
-                // onClick={btnCanceled}
-                onClick={btnHandlerUpload}
-                borderRadius={0}
-                colorScheme="red"
-                mr={3}
-                >
-                Pay
-                </Button>
-                <Button borderRadius={0} onClick={onPaymentClose}>
-                Cancel
-                </Button>
-            </ModalFooter>
-            </ModalContent>
-        </Modal>
-        {/* utk modal canceled*/}
-        <Modal closeOnOverlayClick={false} isOpen={isCancelOpen} onClose={onCancelClose}>
-            <ModalOverlay />
-            <ModalContent borderRadius={0}>
-            <ModalHeader>Are you sure to canceled room ?</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}></ModalBody>
+          <ModalFooter>
+            <Button
+              // onClick={btnCanceled}
+              onClick={btnHandlerUpload}
+              borderRadius={0}
+              colorScheme="red"
+              mr={3}
+            >
+              Pay
+            </Button>
+            <Button borderRadius={0} onClick={onPaymentClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      {/* utk modal canceled*/}
+      <Modal
+        closeOnOverlayClick={false}
+        isOpen={isCancelOpen}
+        onClose={onCancelClose}
+      >
+        <ModalOverlay />
+        <ModalContent borderRadius={0}>
+          <ModalHeader>Are you sure to canceled room ?</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}></ModalBody>
 
-            <ModalFooter>
-                <Button
-                onClick={btnCanceled}
-                borderRadius={0}
-                colorScheme="red"
-                mr={3}
-                >
-                cancel
-                </Button>
-                <Button borderRadius={0} onClick={onCancelClose}>
-                back
-                </Button>
-            </ModalFooter>
-            </ModalContent>
-        </Modal>
+          <ModalFooter>
+            <Button
+              onClick={btnCanceled}
+              borderRadius={0}
+              colorScheme="red"
+              mr={3}
+            >
+              cancel
+            </Button>
+            <Button borderRadius={0} onClick={onCancelClose}>
+              back
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }

@@ -144,6 +144,9 @@ module.exports = {
         });
       }
 
+      if (status === 3) {
+      }
+
       return res.status(200).json({
         message: "Berhasil update",
         result,

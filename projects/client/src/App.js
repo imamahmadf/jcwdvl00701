@@ -158,12 +158,8 @@ function App() {
       <BrowserRouter>
         <Switch>
           {/* page tenant */}
-          <TenantRoute
-            component={RegisterTenant}
-            path="/tenant/register"
-            exact
-          />
-          <TenantRoute component={LoginTenant} path="/tenant/login" exact />
+          <Route component={RegisterTenant} path="/tenant/register" exact />
+          <Route component={LoginTenant} path="/tenant/login" exact />
           <TenantRoute
             component={PropertyListTenant}
             path="/tenant/property"
